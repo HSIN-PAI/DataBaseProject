@@ -1,0 +1,108 @@
+﻿@model ClinicServiceSystem.Models.Clinic
+
+@{
+    ViewBag.Title = "Index";
+
+    string controller = "ClinicQuery";
+    string search = "Search";
+}
+
+<h2>Index</h2>
+
+<form id="search-form">
+    <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 input-group">
+            @Html.LabelFor(m => m.ClinicName, new { @class = "input-group-addon" })
+            @Html.TextBoxFor(m => m.ClinicName, new { @class = "form-control" })
+        </div>
+    </div>
+</form>
+<div style="text-align:center;">
+    <button class="btn btn-success oper" oper="add">Add</button>
+    <button id="search" class="btn btn-warning">Search</button>
+</div>
+<table id="table" class="cell-border">
+    <thead>
+        <tr>
+            <th>Check</th>          @* 0 *@
+            <th>ClinicId</th>       @* 1 *@
+            <th>ClinicName</th>     @* 2 *@
+            <th>Detail</th>         @* 3 *@
+            <th>Edit</th>           @* 4 *@
+            <th>Delete</th>         @* 5 *@
+        </tr>
+    </thead>
+</table>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        var table = $('#table').DataTable({
+            initComplete: function (settings, json) {
+                // work as scrollX: true
+                $("#table").wrap("<div style='overflow:auto; width:100%; position:relative;'></div>");
+            },
+            ajax: {
+                url: '@Url.Action(search, controller)',
+                type: 'post',
+                dataType: 'json',
+                data: function () {
+                    return GetFormObj($('#search-form'));
+                },
+                async: false,
+                dataSrc: function (data) {
+                    if (data.Success)
+                        return JSON.parse(data.Data);
+                    else
+                        alert(data.Message);
+                        return '';
+                }
+            },
+            lengthMenu: [[5, 10, 20, 50, -1], [5, 10, 20, 50, 'All']],
+            order: [2, 'asc'],
+            columns: [
+                { data: null },             // 0
+                { data: 'ClinicId' },       // 1
+                { data: 'ClinicName' },     // 2
+                { data: null },             // 3
+                { data: null },             // 4
+                { data: null }              // 5
+            ],
+            columnDefs: [
+                {
+                    targets: [0],
+                    render: function (data, type, row, meta) {
+                        return "<input type=\"checkbox\">";
+                    },
+                    orderable: false
+                },
+                {
+                    targets: [3],
+                    render: function (data, type, row, meta) {
+                        return "<button class=\"btn btn-info oper\" oper=\"detail\">Detail</button>";
+                    },
+                    orderable: false
+                },
+                {
+                    targets: [4],
+                    render: function (data, type, row, meta) {
+                        return "<button class=\"btn btn-primary oper\" oper=\"edit\">Edit</button>";
+                    },
+                    orderable: false
+                },
+                {
+                    targets: [5],
+                    render: function (data, type, row, meta) {
+                        return "<button class=\"btn btn-danger oper\" oper=\"delete\">Delete</button>";
+                    },
+                    orderable: false
+                }
+            ]
+        });
+
+        // Data query Search
+        $('#search').on('click', function (event) {
+            // Call the DataTable ajax setting and reload.
+            table.ajax.reload();
+        });
+    });
+</script>

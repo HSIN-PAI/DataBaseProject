@@ -1,0 +1,109 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<style type="text/css">
+    /* Form */
+    .input-group {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .input-group-addon {
+        width: 100px;
+        text-align: left;
+    }
+
+    .form-control {
+        height: 35px;
+        width: 80px;
+        max-width: 100%;
+    }
+</style>
+
+<h2>診所查詢</h2>
+
+<div>
+    <input id="param" />
+    <button id="test" class="btn">測試</button>
+</div>
+
+<br />
+
+@* 查詢面板 *@
+@* 澤雍 - 請在這邊修改程式喔~ *@
+<div id="search-form" class="form-group" style="padding: 20px">
+    <form>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <label>醫療機構名稱: </label>
+                <input id="clinic-name" />
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <label>a: </label>
+                <input id="a" />
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <label>b: </label>
+                <input id="b" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <label>c: </label>
+                <input id="c" />
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <label>d: </label>
+                <input id="d" />
+            </div>
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                <label>e: </label>
+                <input id="e" />
+            </div>
+        </div>
+    </form>
+    <div style="text-align:center;">
+        <button id="search" class="btn">搜尋</button>
+    </div>
+</div>
+<div id="table"></div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('#test').on('click', function () {
+            var model = {};
+
+            model.param = $('#param').val();
+
+            $.ajax({
+                url: '@Url.Action("Test", "ClinicQueryTest")',
+                type: 'post',
+                dataType: 'json',
+                data: model,
+                async: false,
+                success: function (data) {
+                    alert(data);
+                }
+            });
+        });
+
+        $('#search').on('click', function () {
+            var model = {};
+
+            model.param = $('#param').val();
+
+            $.ajax({
+                url: '@Url.Action("Search", "ClinicQueryTest")',
+                type: 'post',
+                dataType: 'json',
+                data: model,
+                async: false,
+                success: function (data) {
+                    $('#table').html(data);
+                }
+            });
+        });
+    });
+</script>

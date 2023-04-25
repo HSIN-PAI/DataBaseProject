@@ -1,0 +1,174 @@
+﻿<!DOCTYPE html>
+
+<style type="text/css">
+    /* Side Navigation Bar Start */
+    #sidenav-bar {
+        height: 100%;
+        width: 50px;
+        position: fixed;
+        z-index: 1;
+        top: 50px;
+        left: 0px;
+        background-color: #111;
+        overflow-x: hidden;
+        padding-top: 60px;
+        transition: 0.5s;
+    }
+
+    #sidenav-bar.sidenav-bar-open {
+        width: 240px;           /* Side Navigation Bar - This should be same. */
+    }
+    /* Side Navigation Bar End */
+    
+    /* Side Navigation Bar Context Link Start */
+    #sidenav-bar a {
+        padding: 8px 8px 8px 8px;
+        text-decoration: none;
+        font-size: 25px;
+        color: #818181;
+        transition: 0.3s;
+    }
+
+    #sidenav-bar a:hover {
+        color: #f1f1f1;
+    }
+
+    #sidenav-context {
+        position: absolute;
+        right: -100px;
+        width: 340px;           /* Side Navigation Bar - This should be same. */
+    }
+    /* Side Navigation Bar Context Link End */
+
+    /* Others from Navigation Bar Start */
+    #sidenav-others {
+        width: 90%;
+        margin-left: 50px;
+        padding: 5px;
+        transition: 0.5s;
+    }
+
+    #sidenav-others.sidenav-others-open {
+        margin-left: 240px;     /* Side Navigation Bar - This should be same. */
+    }
+    /* Others from Navigation Bar End */
+
+    /* Side Navigation Button Start */
+    #btn-nav {
+        top: -5px;
+        right: -5px;
+        position: absolute;
+    }
+
+    .btn-nav-icon1, .btn-nav-icon2, .btn-nav-icon3 {
+        width: 35px;
+        height: 5px;
+        background-color: #818181;
+        margin: 6px 6px;
+        transition: 0.5s;
+    }
+
+    .btn-nav-hover {
+        background-color: #f1f1f1;
+    }    
+
+    .btn-nav-toggle .btn-nav-icon1 {
+        transform: translate(0px, 11px) rotate(-45deg);
+    }
+
+    .btn-nav-toggle .btn-nav-icon2 {
+        opacity: 0;
+    }
+
+    .btn-nav-toggle .btn-nav-icon3 {
+        transform: translate(0px, -11px) rotate(45deg);
+    }
+    /* Side Navigation Button End */
+</style>
+
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Clinic Service System</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @Scripts.Render("~/bundles/datatables")
+
+    @RenderSection("scripts", required: false)
+</head>
+<body>
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                @Html.ActionLink("健保特約診所查詢系統", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            </div>
+            <div class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("首頁", "Index", "Home")</li>
+                    <li>@Html.ActionLink("關於", "About", "Home")</li>
+                    <li>@Html.ActionLink("連絡人", "Contact", "Home")</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div id="sidenav-others" class="container body-content">
+        <div id="sidenav-bar">
+            <a id="btn-nav" href="#">
+                <div class="btn-nav-icon1"></div>
+                <div class="btn-nav-icon2"></div>
+                <div class="btn-nav-icon3"></div>
+            </a>
+            <div id="sidenav-context">
+                <div>@Html.ActionLink("診所查詢功能", "Index", "ClinicQuery")</div>
+                <div>@Html.ActionLink("分享評論功能", "Index", "Feedback")</div>
+            </div>
+        </div>
+        <div>
+            @RenderBody()
+        </div>
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - 健保特約診所查詢系統</p>
+        </footer>
+    </div>
+</body>
+</html>
+
+<script type="text/javascript">
+    // Side Navigation Bar Event Start _____
+    $('#btn-nva').hover(function () {
+        $('[class^="btn-nav-icon"]').toggleClass('btn-nav-hover');
+    }, function () {
+        $('[class^="btn-nav-icon"]').toggleClass('btn-nav-hover');
+    });
+
+    $('#btn-nav').on('click', function () {
+        $('#btn-nav').toggleClass('btn-nav-toggle');
+        $('#sidenav-bar').toggleClass('sidenav-bar-open');
+        $('#sidenav-others').toggleClass('sidenav-others-open');
+    });
+    // Side Navigation Bar Event End _____
+
+    // Global Function Start _____
+    // Get the data form the selector by form element.
+    function GetFormObj(selector) {
+        var result = {};
+        var data = $(selector).serializeArray()
+
+        $.each(data, function (i, data) {
+            result[data.name] = data.value;
+        });
+
+        return result;
+    };
+    // Global Function End _____
+</script>
