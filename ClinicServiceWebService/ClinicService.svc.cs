@@ -1,7 +1,9 @@
 ﻿using Newtonsoft.Json;
+using System;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
+using System.Reflection;
 using System.Text;
 
 namespace ClinicServiceWebService
@@ -17,12 +19,14 @@ namespace ClinicServiceWebService
 
         public DataTable QueryClinic(string strClinicName)
         {
-            string strConnStr = ConfigurationManager.AppSettings["ConnectionString"];
+            string strConnStr = ConfigurationManager.AppSettings["ConnectionString"]
+                                                    .Replace("{BaseDirectory}", AppDomain.CurrentDomain.BaseDirectory)
+                                                    .Replace("\\" + Assembly.GetCallingAssembly().GetName().Name, "");
             DataTable dtResult = new DataTable();
 
             using (SqlConnection conn = new SqlConnection(strConnStr))
             {
-                string strSql = "select * from CLINICTEST";
+                string strSql = "select * from clinic";
 
                 using (SqlCommand cmd = new SqlCommand(strSql, conn))
                 {

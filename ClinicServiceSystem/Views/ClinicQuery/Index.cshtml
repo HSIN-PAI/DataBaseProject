@@ -27,9 +27,15 @@
             <th>Check</th>          @* 0 *@
             <th>ClinicId</th>       @* 1 *@
             <th>ClinicName</th>     @* 2 *@
-            <th>Detail</th>         @* 3 *@
-            <th>Edit</th>           @* 4 *@
-            <th>Delete</th>         @* 5 *@
+            <th>ClinicType</th>     @* 3 *@
+            <th>ServiceType</th>    @* 4 *@
+            <th>OutPatientType</th> @* 5 *@
+            <th>CoopType</th>       @* 6 *@
+            <th>BusinessHour</th>   @* 7 *@
+            <th>Phone</th>          @* 8 *@
+            <th>Detail</th>         @* 9 *@
+            <th>Edit</th>           @* 10 *@
+            <th>Delete</th>         @* 11 *@
         </tr>
     </thead>
 </table>
@@ -63,9 +69,15 @@
                 { data: null },             // 0
                 { data: 'ClinicId' },       // 1
                 { data: 'ClinicName' },     // 2
-                { data: null },             // 3
-                { data: null },             // 4
-                { data: null }              // 5
+                { data: 'ClinicType' },     // 3
+                { data: 'ServiceType' },    // 4
+                { data: 'OutPatientType' }, // 5
+                { data: 'CoopType' },       // 6
+                { data: 'BusinessHour' },   // 7
+                { data: 'Phone' },          // 8
+                { data: null },             // 9
+                { data: null },             // 10
+                { data: null }              // 11
             ],
             columnDefs: [
                 {
@@ -76,21 +88,21 @@
                     orderable: false
                 },
                 {
-                    targets: [3],
+                    targets: [9],
                     render: function (data, type, row, meta) {
                         return "<button class=\"btn btn-info oper\" oper=\"detail\">Detail</button>";
                     },
                     orderable: false
                 },
                 {
-                    targets: [4],
+                    targets: [10],
                     render: function (data, type, row, meta) {
                         return "<button class=\"btn btn-primary oper\" oper=\"edit\">Edit</button>";
                     },
                     orderable: false
                 },
                 {
-                    targets: [5],
+                    targets: [11],
                     render: function (data, type, row, meta) {
                         return "<button class=\"btn btn-danger oper\" oper=\"delete\">Delete</button>";
                     },

@@ -35,8 +35,18 @@ namespace ClinicServiceSystem.Controllers
                 {
                     lstResult.Add(new Clinic()
                     {
-                        ClinicId = dr.Field<int>("ClinicId"),
-                        ClinicName = dr.Field<string>("ClinicName")
+                        ClinicId = dr.Field<decimal>("clinic_id"),
+                        ClinicName = dr.Field<string>("clinic_name"),
+                        ClinicType = dr.Field<int>("clinic_type"),
+                        ServiceType = dr.Field<int>("service_type"),
+                        OutPatientType = dr.Field<int>("outpatient_type"),
+                        CoopType = dr.Field<int>("coop_type"),
+                        BusinessHour= dr.Field<int>("business_hour"),
+                        Phone = dr.Field<string>("phone"),
+                        Address = dr.Field<string>("remark"),
+                        Rmark = dr.Field<string>("address"),
+                        DepartmentName = dr.Field<string>("department_name"),
+                        CountyId = dr.Field<int?>("county_id"),
                     });
                 }
 
