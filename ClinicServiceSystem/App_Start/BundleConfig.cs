@@ -27,12 +27,19 @@ namespace ClinicServiceSystem
                 "~/Scripts/dataTables.bootstrap.js",
                 "~/Scripts/jquery.dataTables.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/jquery-ui").Include(
+                "~/Scripts/jquery-ui.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/select2").Include(
+                "~/Scripts/select2.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                 "~/Content/bootstrap.css",
                 "~/Content/site.css",
                 "~/Content/datatables.css",
                 "~/Content/jquery.dataTables.css",
-                "~/Content/dataTables.bootstrap.css"));
+                "~/Content/dataTables.bootstrap.css",
+                "~/Content/css/select2.css"));
         }
     }
 }

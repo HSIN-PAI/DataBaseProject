@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.IO;
 using System.Linq;
 using System.Web;
@@ -58,6 +59,64 @@ namespace ClinicServiceSystem.Controllers
 
                 return sw.GetStringBuilder().ToString();
             }
+        }
+
+        /// <summary>
+        /// Get the Select List from Enum Type.
+        /// </summary>
+        /// <param name="dtKeyValue">The DataTable of Key Value.</param>
+        /// <param name="strSelected">The Selected Value.</param>
+        /// <returns>The Select List.</returns>
+        public SelectList GetSelectList(DataTable dtKeyValue, string strSelected)
+        {
+            List<string> lstSelected = string.IsNullOrEmpty(strSelected) ? new List<string>() : strSelected.Split(',').ToList();
+
+            List<SelectListItem> selectListItems = new List<SelectListItem>();
+
+            foreach (DataRow dr in dtKeyValue.AsEnumerable())
+            {
+                selectListItems.Add(new SelectListItem()
+                {
+                    Value = dr[0].ToString(),
+                    Text = dr[1].ToString(),
+                    Selected = lstSelected.Contains(dr[1].ToString())
+                });
+            }
+
+            return new SelectList(selectListItems, "Value", "Text", lstSelected);
+        }
+
+        /// <summary>
+        /// Get the Select List with a Empty selection from Enum Type.
+        /// </summary>
+        /// <param name="dtKeyValue">The DataTable of Key Value.</param>
+        /// <param name="strSelected">The String of Selected Value.</param>
+        /// <returns>The Select List.</returns>
+        public SelectList GetSelectListWithEmpty(DataTable dtKeyValue, string strSelected)
+        {
+            List<string> lstSelected = string.IsNullOrEmpty(strSelected) ? new List<string>() : strSelected.Split(',').ToList();
+
+            List<SelectListItem> selectListItems = new List<SelectListItem>()
+            {
+                new SelectListItem()
+                {
+                    Value = "",
+                    Text = "",
+                    Selected = lstSelected.Count.Equals(0)
+                }
+            };
+
+            foreach (DataRow dr in dtKeyValue.AsEnumerable())
+            {
+                selectListItems.Add(new SelectListItem()
+                {
+                    Value = dr[0].ToString(),
+                    Text = dr[1].ToString(),
+                    Selected = lstSelected.Contains(dr[1].ToString())
+                });
+            }
+
+            return new SelectList(selectListItems, "Value", "Text", lstSelected);
         }
     }
 }

@@ -5,43 +5,177 @@
 
     string controller = "ClinicQuery";
     string search = "Search";
+    string action = "Action";
+    string save = "Save";
 }
+
+<style type="text/css">
+    /* Dialog */
+    .ui-dialog-titlebar {
+        color: white;
+        background-color: royalblue;
+    }
+
+    /* Form */
+    .input-group {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
+
+    .input-group-addon {
+        width: 100px;
+        text-align: left;
+    }
+
+    .form-control {
+        height: 35px;
+        width: 80px;
+        max-width: 100%;
+    }
+
+    /* Select List */
+    .ui-button.ui-selectmenu-button {
+        height: 35px;
+        width: 100%;
+    }
+
+    .ui-selectmenu-text {
+        margin-top: 3px
+    }
+
+    .ui-icon.ui-selectmenu-icon {
+        margin-top: 3px;
+    }
+
+    .select2-selection, .select2-selection--multiple {
+        width: 100%;
+        height: 35px;
+    }
+
+    .select2-results__option:before {
+        content: "";
+        display: inline-block;
+        position: relative;
+        height: 17px;
+        width: 17px;
+        border: 1px solid black;
+        border-radius: 3px;
+        background-color: white;
+        margin-right: 10px;
+        vertical-align: middle;
+    }
+
+    .select2-results__option[aria-selected=true]:before {
+        font-family: fontAwesome;
+        content: "✓";
+        color: #fff;
+        background-color: #337ab7;
+        border: 0px;
+        display: inline-block;
+        padding-left: 3px;
+    }
+
+    /* Text Area */
+    textarea {
+        resize: none;
+    }
+
+    /* Operation Button */
+    .btn {
+        width: 60px;
+        padding: 5px 0px;
+        margin-right: 10px;
+        border: 10px;
+    }
+
+    .btn-add {
+        color: white;
+        background-color: darkseagreen;
+    }
+
+    .btn-detail {
+        color: white;
+        background-color: deepskyblue;
+    }
+
+    .btn-edit {
+        color: white;
+        background-color: cornflowerblue;
+    }
+
+    .btn-delete {
+        color: white;
+        background-color: indianred;
+    }
+
+    .btn-cancel {
+        color: white;
+        background-color: grey;
+    }
+</style>
 
 <h2>Index</h2>
 
-<form id="search-form">
-    <div class="row">
-        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 input-group">
-            @Html.LabelFor(m => m.ClinicName, new { @class = "input-group-addon" })
-            @Html.TextBoxFor(m => m.ClinicName, new { @class = "form-control" })
+<div class="panel">
+    <form id="search-form">
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 input-group">
+                @Html.LabelFor(m => m.ClinicName, new { @class = "input-group-addon" })
+                @Html.TextBoxFor(m => m.ClinicName, new { @class = "form-control" })
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 input-group">
+                @Html.LabelFor(m => m.ClinicType, new { @class = "input-group-addon" })
+                @Html.DropDownListFor(m => m.ClinicType, Model.ClinicTypeSelectList, new { @class = "form-control multiselect", @multiple = "multiple" })
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 input-group">
+                @Html.LabelFor(m => m.ServiceType, new { @class = "input-group-addon" })
+                @Html.DropDownListFor(m => m.ServiceType, Model.ServiceTypeSelectList, new { @class = "form-control multiselect", @multiple = "multiple" })
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 input-group">
+                @Html.LabelFor(m => m.CoopType, new { @class = "input-group-addon" })
+                @Html.DropDownListFor(m => m.OutPatientType, Model.OutPatientTypeSelectList, new { @class = "form-control multiselect", @multiple = "multiple" })
+            </div>
         </div>
+        <div class="row">
+            <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 input-group">
+                @Html.LabelFor(m => m.ClinicName, new { @class = "input-group-addon" })
+                @Html.TextBoxFor(m => m.ClinicName, new { @class = "form-control" })
+            </div>
+        </div>
+    </form>
+    <div style="text-align:center;">
+        <button class="btn btn-success oper" oper="add">Add</button>
+        <button id="search" class="btn btn-warning">Search</button>
     </div>
-</form>
-<div style="text-align:center;">
-    <button class="btn btn-success oper" oper="add">Add</button>
-    <button id="search" class="btn btn-warning">Search</button>
+    <table id="table" class="cell-border">
+        <thead>
+            <tr>
+                <th>Check</th>          @* 0 *@
+                <th>ClinicId</th>       @* 1 *@
+                <th>ClinicName</th>     @* 2 *@
+                <th>ClinicType</th>     @* 3 *@
+                <th>ServiceType</th>    @* 4 *@
+                <th>OutPatientType</th> @* 5 *@
+                <th>CoopType</th>       @* 6 *@
+                <th>BusinessHour</th>   @* 7 *@
+                <th>Phone</th>          @* 8 *@
+                <th>Detail</th>         @* 9 *@
+                <th>Edit</th>           @* 10 *@
+                <th>Delete</th>         @* 11 *@
+            </tr>
+        </thead>
+    </table>
 </div>
-<table id="table" class="cell-border">
-    <thead>
-        <tr>
-            <th>Check</th>          @* 0 *@
-            <th>ClinicId</th>       @* 1 *@
-            <th>ClinicName</th>     @* 2 *@
-            <th>ClinicType</th>     @* 3 *@
-            <th>ServiceType</th>    @* 4 *@
-            <th>OutPatientType</th> @* 5 *@
-            <th>CoopType</th>       @* 6 *@
-            <th>BusinessHour</th>   @* 7 *@
-            <th>Phone</th>          @* 8 *@
-            <th>Detail</th>         @* 9 *@
-            <th>Edit</th>           @* 10 *@
-            <th>Delete</th>         @* 11 *@
-        </tr>
-    </thead>
-</table>
 
 <script type="text/javascript">
     $(document).ready(function () {
+        // Initialize select list
+        $('.multiselect').select2({
+            placeholder: '',
+            allowClear: true,
+            closeOnSelect: false
+        });
+
         var table = $('#table').DataTable({
             initComplete: function (settings, json) {
                 // work as scrollX: true
@@ -52,7 +186,7 @@
                 type: 'post',
                 dataType: 'json',
                 data: function () {
-                    return GetFormObj($('#search-form'));
+                    return GetFormObj($('#search-form :input'));
                 },
                 async: false,
                 dataSrc: function (data) {
@@ -115,6 +249,115 @@
         $('#search').on('click', function (event) {
             // Call the DataTable ajax setting and reload.
             table.ajax.reload();
+        });
+
+        // Data manipulate Action and Save
+        $('.btn.oper').on('click', function (event) {
+            var operCode = $(this).attr('oper');
+
+            var selectedRow = $(this).parents('tr');
+            var data = table.row(selectedRow).data();
+
+            var model = {};
+
+            switch (operCode) {
+                case 'add':
+                    model.operCode = operCode;
+
+                    break;
+
+                case 'detail':
+                case 'edit':
+                case 'delete':
+                    model.operCode = operCode;
+                    model.id = data.Id;
+
+                    break;
+
+                default:
+                    return;
+            }
+
+            $.ajax({
+                url: '@Url.Action(action, controller)',
+                type: 'post',
+                dataType: 'json',
+                data: model,
+                async: false,
+                success: function (data) {
+                    if (data.Success) {
+                        // Create a popupwindow dialog
+                        var popupwindow = data.Data;
+                        $(popupwindow).dialog({
+                            autoOpen: true,
+                            modal: true,
+                            resizable: false,
+                            width: 600,
+                            height: 'auto',
+                            close: function (event, ui) {
+                                $(this).dialog('destroy').remove();
+                            }
+                        });
+
+                        // Initailize select menu
+                        $('#popupwindow .selectmenu').selectmenu();
+
+                        // Focus on the nonaction button to prevent mistake action
+                        $('#popupwindow').find('button[class*="detail"], button[class*="cancel"]').focus();
+
+                        // Popupwindow button's event
+                        $('#popupwindow').on('click', '.btn', function (event) {
+                            var operCode = $(this).attr('oper');
+                            var popupwindow = $('#popupwindow');
+
+                            switch (operCode) {
+                                case 'add':
+                                case 'edit':
+                                case 'delete':
+                                    var table = $('#table').DataTable();
+                                    var model = GetFormObj($('#popupwindow form'));
+
+                                    model.operCode = operCode;
+
+                                    $.ajax({
+                                        url: '@Url.Action(save, controller)',
+                                        type: 'post',
+                                        dataType: 'json',
+                                        data: model,
+                                        async: false,
+                                        success: function (data) {
+                                            if (data.Success) {
+                                                popupwindow.dialog('destroy').remove();
+
+                                                $('#search').click();
+                                            }
+                                            else {
+                                                alert(data.Message);
+                                            }
+                                        },
+                                        error: function (data) {
+                                            alert(data);
+                                        }
+                                    });
+
+                                    break;
+
+                                case 'detail':
+                                case 'cancel':
+                                    popupwindow.dialog('destroy').remove();
+
+                                    break;
+                            }
+                        });
+                    }
+                    else {
+                        alert(data.Message);
+                    }
+                },
+                error: function (data) {
+                    alert(data);
+                }
+            });
         });
     });
 </script>

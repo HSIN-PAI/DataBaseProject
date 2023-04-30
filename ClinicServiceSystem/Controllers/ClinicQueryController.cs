@@ -16,7 +16,20 @@ namespace ClinicServiceSystem.Controllers
         // GET: ClinicQuery
         override public ActionResult Index()
         {
-            Clinic model = new Clinic();
+            DataTable dt = new DataTable();
+            dt.Columns.Add("0");
+            dt.Columns.Add("1");
+            dt.Rows.Add("A", "A");
+            dt.Rows.Add("B", "B");
+
+            Clinic model = new Clinic()
+            {
+                ClinicTypeSelectList = GetSelectList(dt, ""),
+                ServiceTypeSelectList = GetSelectList(dt, ""),
+                OutPatientTypeSelectList = GetSelectList(dt, ""),
+                CoopTypeSelectList = GetSelectList(dt, ""),
+                BusinessHourSelectList = GetSelectList(dt, "")
+            };
 
             return View(model);
         }
@@ -37,11 +50,11 @@ namespace ClinicServiceSystem.Controllers
                     {
                         ClinicId = dr.Field<decimal>("clinic_id"),
                         ClinicName = dr.Field<string>("clinic_name"),
-                        ClinicType = dr.Field<int>("clinic_type"),
-                        ServiceType = dr.Field<int>("service_type"),
-                        OutPatientType = dr.Field<int>("outpatient_type"),
-                        CoopType = dr.Field<int>("coop_type"),
-                        BusinessHour= dr.Field<int>("business_hour"),
+                        ClinicType = dr.Field<string>("clinic_type"),
+                        ServiceType = dr.Field<string>("service_type"),
+                        OutPatientType = dr.Field<string>("outpatient_type"),
+                        CoopType = dr.Field<string>("coop_type"),
+                        BusinessHour= dr.Field<string>("business_hour"),
                         Phone = dr.Field<string>("phone"),
                         Address = dr.Field<string>("remark"),
                         Rmark = dr.Field<string>("address"),
@@ -51,6 +64,40 @@ namespace ClinicServiceSystem.Controllers
                 }
 
                 result.Data = JsonConvert.SerializeObject(lstResult);
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return new JsonResult { Data = result };
+        }
+
+        [HttpPost]
+        public ActionResult Action(Clinic model)
+        {
+            Result result = new Result();
+
+            try
+            {
+                switch (model.OperCode)
+                {
+                    case "add":
+                        break;
+
+                    case "detail":
+                    case "edit":
+                    case "delete":
+
+                        break;
+
+                    default:
+                        break;
+                }
+
+                result.Data = RenderPartialViewToString("_PartialCRUD", model);
                 result.Success = true;
             }
             catch (Exception ex)
