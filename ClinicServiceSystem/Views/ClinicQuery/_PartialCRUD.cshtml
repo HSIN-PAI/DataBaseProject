@@ -1,138 +1,51 @@
-﻿@model MyPlayGround.Models.ToDoList
+﻿@model ClinicServiceSystem.Models.Clinic
 
 <div id="popupwindow" title="@Model.ShowCode" style="overflow:hidden">
     <form>
         <div class="row hidden">
-            @* Id *@
+            @* ClinicId *@
             <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 input-group list-unstyled">
-                @Html.LabelFor(m => m.Id, new { @class = "input-group-addon" })
-                @Html.TextBoxFor(m => m.Id, new { @class = "form-control", @readonly = "readonly" })
+                @Html.LabelFor(m => m.ClinicId, new { @class = "input-group-addon" })
+                @Html.TextBoxFor(m => m.ClinicId, new { @class = "form-control", @readonly = "readonly" })
             </div>
         </div>
         <div class="row">
-            @* Sequence *@
+            @* ClinicName *@
             <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 input-group">
-                @Html.LabelFor(m => m.Sequence, new { @class = "input-group-addon" })
-                @Html.TextBoxFor(m => m.Sequence, new { @class = "form-control", @readonly = "readonly" })
+                @Html.LabelFor(m => m.ClinicName, new { @class = "input-group-addon" })
+                @Html.TextBoxFor(m => m.ClinicName, new { @class = "form-control" })
             </div>
-
-            @* Item *@
-            <div class="col-lg-8 col-md-8 col-sm-8 col-xs-8 input-group">
-                @if (Model.ActionCode == Model.Create || Model.ActionCode == Model.Update)
-                {
-                    @Html.LabelFor(m => m.Item, new { @class = "input-group-addon" })
-                    @Html.TextBoxFor(m => m.Item, new { @class = "form-control" })
-                }
-                else
-                {
-                    @Html.LabelFor(m => m.Item, new { @class = "input-group-addon" })
-                    @Html.TextBoxFor(m => m.Item, new { @class = "form-control", @readonly = "readonly" })
-                }
+            @* ClinicType *@
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 input-group">
+                @Html.LabelFor(m => m.ClinicType, new { @class = "input-group-addon" })
+                @Html.TextAreaFor(m => m.ClinicType, new { @class = "form-control" })
             </div>
-        </div>
-        <div class="row">
-            @* Description *@
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 input-group">
-                @if (Model.ActionCode == Model.Create || Model.ActionCode == Model.Update)
-                {
-                    @Html.LabelFor(m => m.Description, new { @class = "input-group-addon" })
-                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control" })
-                }
-                else
-                {
-                    @Html.LabelFor(m => m.Description, new { @class = "input-group-addon" })
-                    @Html.TextAreaFor(m => m.Description, new { @class = "form-control", @readonly = "readonly" })
-                }
+            @* ServiceType *@
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 input-group">
+                @Html.LabelFor(m => m.ServiceType, new { @class = "input-group-addon" })
+                @Html.TextAreaFor(m => m.ServiceType, new { @class = "form-control" })
+            </div>
+            @* OutPatientType *@
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 input-group">
+                @Html.LabelFor(m => m.OutPatientType, new { @class = "input-group-addon" })
+                @Html.TextAreaFor(m => m.OutPatientType, new { @class = "form-control" })
             </div>
         </div>
         <div class="row">
-            @* Level *@
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 input-group">
-                @if (Model.ActionCode == Model.Create || Model.ActionCode == Model.Update)
-                {
-                    @Html.LabelFor(m => m.Level, new { @class = "input-group-addon" })
-                    @Html.DropDownListFor(m => m.Level, Model.LevelSelectList, new { @class = "form-control selectmenu" })
-                }
-                else
-                {
-                    @Html.LabelFor(m => m.Level, new { @class = "input-group-addon" })
-                    @Html.DropDownListFor(m => m.Level, Model.LevelSelectList, new { @class = "form-control selectmenu", @disabled = "disabled" })
-                    // DropDownList can't use attribute readonly, so use disabled and add a hidden input to set and send the value.
-                    @Html.TextBoxFor(m => m.Level, new { @hidden = "hidden" })
-                }
+            @* CoopType *@
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 input-group">
+                @Html.LabelFor(m => m.CoopType, new { @class = "input-group-addon" })
+                @Html.TextBoxFor(m => m.CoopType, new { @class = "form-control" })
             </div>
-
-            @* Status *@
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 input-group">
-                @if (Model.ActionCode == Model.Create || Model.ActionCode == Model.Update)
-                {
-                    @Html.LabelFor(m => m.Status, new { @class = "input-group-addon" })
-                    @Html.DropDownListFor(m => m.Status, Model.StatusSelectList, new { @class = "form-control selectmenu" })
-                }
-                else
-                {
-                    @Html.LabelFor(m => m.Status, new { @class = "input-group-addon" })
-                    @Html.DropDownListFor(m => m.Status, Model.StatusSelectList, new { @class = "form-control selectmenu", @disabled = "disabled" })
-                    // DropDownList can't use attribute readonly, so use disabled and add a hidden input to set and send the value.
-                    @Html.TextBoxFor(m => m.Status, new { @hidden = "hidden" })
-                }
+            @* BusinessHour *@
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 input-group">
+                @Html.LabelFor(m => m.BusinessHour, new { @class = "input-group-addon" })
+                @Html.TextAreaFor(m => m.BusinessHour, new { @class = "form-control" })
             </div>
-        </div>
-        <div class="row">
-            @* Comment *@
-            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 input-group">
-                @if (Model.ActionCode == Model.Create || Model.ActionCode == Model.Update)
-                {
-                    @Html.LabelFor(m => m.Comment, new { @class = "input-group-addon" })
-                    @Html.TextAreaFor(m => m.Comment, new { @class = "form-control" })
-                }
-                else
-                {
-                    @Html.LabelFor(m => m.Comment, new { @class = "input-group-addon" })
-                    @Html.TextAreaFor(m => m.Comment, new { @class = "form-control", @readonly = "readonly" })
-                }
-            </div>
-        </div>
-        <div class="row">
-            @* ModifyUser *@
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 input-group">
-                @Html.LabelFor(m => m.ModifyUser, new { @class = "input-group-addon" })
-                @Html.TextBoxFor(m => m.ModifyUser, new { @class = "form-control", @readonly = "readonly" })
-            </div>
-
-            @* ModifyDate *@
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 input-group">
-                @if (Model.ActionCode == Model.Create)
-                {
-                    @Html.LabelFor(m => m.ModifyDate, new { @class = "input-group-addon" })
-                    @Html.TextBoxFor(m => m.ModifyDate, "{0:\"\"}", new { @class = "form-control", @readonly = "readonly" })
-                }
-                else
-                {
-                    @Html.LabelFor(m => m.ModifyDate, new { @class = "input-group-addon" })
-                    @Html.TextBoxFor(m => m.ModifyDate, "{0:yyyy/MM/dd HH:mm:ss}", new { @class = "form-control", @readonly = "readonly" })
-                }
-            </div>
-        </div>
-        <div class="row">
-            @* CreateUser *@
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 input-group">
-                @Html.LabelFor(m => m.CreateUser, new { @class = "input-group-addon" })
-                @Html.TextBoxFor(m => m.CreateUser, new { @class = "form-control", @readonly = "readonly" })
-            </div>
-
-            @* CreateDate *@
-            <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6 input-group">
-                @if (Model.ActionCode == Model.Create)
-                {
-                    @Html.LabelFor(m => m.CreateDate, new { @class = "input-group-addon" })
-                    @Html.TextBoxFor(m => m.CreateDate, "{0:\"\"}", new { @class = "form-control", @readonly = "readonly" })
-                }
-                else
-                {
-                    @Html.LabelFor(m => m.CreateDate, new { @class = "input-group-addon" })
-                    @Html.TextBoxFor(m => m.CreateDate, "{0:yyyy/MM/dd HH:mm:ss}", new { @class = "form-control", @readonly = "readonly" })
-                }
+            @* Phone *@
+            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4 input-group">
+                @Html.LabelFor(m => m.Phone, new { @class = "input-group-addon" })
+                @Html.TextAreaFor(m => m.Phone, new { @class = "form-control" })
             </div>
         </div>
     </form>

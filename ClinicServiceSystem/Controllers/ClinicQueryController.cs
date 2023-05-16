@@ -90,6 +90,22 @@ namespace ClinicServiceSystem.Controllers
                     case "detail":
                     case "edit":
                     case "delete":
+                        DataTable dtQuery = svc.QueryClinicById((decimal)model.ClinicId);
+                        model = new Clinic()
+                        {
+                            ClinicId = dtQuery.Rows[0].Field<decimal>("clinic_id"),
+                            ClinicName = dtQuery.Rows[0].Field<string>("clinic_name"),
+                            ClinicType = dtQuery.Rows[0].Field<string>("clinic_type"),
+                            ServiceType = dtQuery.Rows[0].Field<string>("service_type"),
+                            OutPatientType = dtQuery.Rows[0].Field<string>("outpatient_type"),
+                            CoopType = dtQuery.Rows[0].Field<string>("coop_type"),
+                            BusinessHour = dtQuery.Rows[0].Field<string>("business_hour"),
+                            Phone = dtQuery.Rows[0].Field<string>("phone"),
+                            Address = dtQuery.Rows[0].Field<string>("remark"),
+                            Rmark = dtQuery.Rows[0].Field<string>("address"),
+                            DepartmentName = dtQuery.Rows[0].Field<string>("department_name"),
+                            CountyId = dtQuery.Rows[0].Field<int?>("county_id"),
+                        };
 
                         break;
 
