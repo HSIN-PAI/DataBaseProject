@@ -105,7 +105,6 @@
     @Scripts.Render("~/bundles/jquery-ui")
     @Scripts.Render("~/bundles/select2")
 
-
     @RenderSection("scripts", required: false)
 </head>
 <body>
@@ -173,7 +172,10 @@
         var data = $(selector).serializeArray();
 
         $.each(data, function (idx, e) {
-            result[e.name] = String($('#' + e.name).val());
+            if (result[e.name] == undefined)
+                result[e.name] = e.value;
+            else
+                result[e.name] += ',' + e.value;
         });
 
         return result;

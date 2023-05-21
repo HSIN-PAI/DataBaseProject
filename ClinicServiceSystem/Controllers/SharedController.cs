@@ -79,7 +79,7 @@ namespace ClinicServiceSystem.Controllers
                 {
                     Value = dr[0].ToString(),
                     Text = dr[1].ToString(),
-                    Selected = lstSelected.Contains(dr[1].ToString())
+                    Selected = lstSelected.Contains(dr[0].ToString())
                 });
             }
 
@@ -112,7 +112,7 @@ namespace ClinicServiceSystem.Controllers
                 {
                     Value = dr[0].ToString(),
                     Text = dr[1].ToString(),
-                    Selected = lstSelected.Contains(dr[1].ToString())
+                    Selected = lstSelected.Contains(dr[0].ToString())
                 });
             }
 

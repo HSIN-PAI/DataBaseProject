@@ -16,19 +16,13 @@ namespace ClinicServiceSystem.Controllers
         // GET: ClinicQuery
         override public ActionResult Index()
         {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("0");
-            dt.Columns.Add("1");
-            dt.Rows.Add("A", "A");
-            dt.Rows.Add("B", "B");
-
             Clinic model = new Clinic()
             {
-                ClinicTypeSelectList = GetSelectList(dt, ""),
-                ServiceTypeSelectList = GetSelectList(dt, ""),
-                OutPatientTypeSelectList = GetSelectList(dt, ""),
-                CoopTypeSelectList = GetSelectList(dt, ""),
-                BusinessHourSelectList = GetSelectList(dt, "")
+                ClinicTypeSelectList = GetSelectList(svc.SelectKeyCodeClinicType(), ""),
+                ServiceTypeSelectList = GetSelectList(svc.SelectKeyCodeServiceType(), ""),
+                OutPatientTypeSelectList = GetSelectList(svc.SelectKeyCodeOutPatientType(), ""),
+                CoopTypeSelectList = GetSelectList(svc.SelectKeyCodeCoopType(), ""),
+                BusinessHourSelectList = GetSelectList(svc.SelectKeyCodeBusinessTime(), "")
             };
 
             return View(model);
@@ -42,22 +36,23 @@ namespace ClinicServiceSystem.Controllers
             try
             {
                 List<Clinic> lstResult = new List<Clinic>();
-                DataTable dtQuery = svc.QueryClinic(model.ClinicName);
+                DataTable dtQuery = svc.SelectClinic(model.ClinicName, model.ClinicType, model.ServiceType, model.OutPatientType, model.BusinessHour);
 
                 foreach(DataRow dr in dtQuery.Rows)
                 {
                     lstResult.Add(new Clinic()
                     {
-                        ClinicId = dr.Field<decimal>("clinic_id"),
+                        ClinicId = dr.Field<string>("clinic_id"),
                         ClinicName = dr.Field<string>("clinic_name"),
                         ClinicType = dr.Field<string>("clinic_type"),
-                        ServiceType = dr.Field<string>("service_type"),
-                        OutPatientType = dr.Field<string>("outpatient_type"),
-                        CoopType = dr.Field<string>("coop_type"),
-                        BusinessHour= dr.Field<string>("business_hour"),
+                        ServiceType = dr.Field<string>("service_name"),
+                        OutPatientType = dr.Field<string>("outpatient_name"),
+                        CoopType = dr.Field<string>("coop_type_name"),
+
+                        BusinessHour= dr.Field<string>("business_time_frame"),
                         Phone = dr.Field<string>("phone"),
                         Address = dr.Field<string>("remark"),
-                        Rmark = dr.Field<string>("address"),
+                        Remark = dr.Field<string>("address"),
                         DepartmentName = dr.Field<string>("department_name"),
                         CountyId = dr.Field<int?>("county_id"),
                     });
@@ -90,21 +85,30 @@ namespace ClinicServiceSystem.Controllers
                     case "detail":
                     case "edit":
                     case "delete":
-                        DataTable dtQuery = svc.QueryClinicById((decimal)model.ClinicId);
+                        DataTable dtQuery = svc.SelectClinicById(model.ClinicId);
+
                         model = new Clinic()
                         {
-                            ClinicId = dtQuery.Rows[0].Field<decimal>("clinic_id"),
+                            ClinicId = dtQuery.Rows[0].Field<string>("clinic_id"),
                             ClinicName = dtQuery.Rows[0].Field<string>("clinic_name"),
                             ClinicType = dtQuery.Rows[0].Field<string>("clinic_type"),
-                            ServiceType = dtQuery.Rows[0].Field<string>("service_type"),
-                            OutPatientType = dtQuery.Rows[0].Field<string>("outpatient_type"),
-                            CoopType = dtQuery.Rows[0].Field<string>("coop_type"),
-                            BusinessHour = dtQuery.Rows[0].Field<string>("business_hour"),
+                            ServiceType = dtQuery.Rows[0].Field<string>("service_id"),
+                            OutPatientType = dtQuery.Rows[0].Field<string>("outpatient_id"),
+                            CoopType = dtQuery.Rows[0].Field<string>("coop_type_id"),
+                            BusinessHour = dtQuery.Rows[0].Field<string>("business_time_id"),
                             Phone = dtQuery.Rows[0].Field<string>("phone"),
-                            Address = dtQuery.Rows[0].Field<string>("remark"),
-                            Rmark = dtQuery.Rows[0].Field<string>("address"),
+                            Address = dtQuery.Rows[0].Field<string>("address"),
+                            Remark = dtQuery.Rows[0].Field<string>("remark"),
                             DepartmentName = dtQuery.Rows[0].Field<string>("department_name"),
                             CountyId = dtQuery.Rows[0].Field<int?>("county_id"),
+
+                            ClinicTypeSelectList = GetSelectList(svc.SelectKeyCodeClinicType(), dtQuery.Rows[0].Field<string>("clinic_type")),
+                            ServiceTypeSelectList = GetSelectList(svc.SelectKeyCodeServiceType(), dtQuery.Rows[0].Field<string>("service_id")),
+                            OutPatientTypeSelectList = GetSelectList(svc.SelectKeyCodeOutPatientType(), dtQuery.Rows[0].Field<string>("outpatient_id")),
+                            CoopTypeSelectList = GetSelectList(svc.SelectKeyCodeCoopType(), dtQuery.Rows[0].Field<string>("coop_type_id")),
+                            BusinessHourSelectList = GetSelectList(svc.SelectKeyCodeBusinessTime(), dtQuery.Rows[0].Field<string>("business_time_id")),
+
+                            OperCode = model.OperCode
                         };
 
                         break;
@@ -114,6 +118,49 @@ namespace ClinicServiceSystem.Controllers
                 }
 
                 result.Data = RenderPartialViewToString("_PartialCRUD", model);
+                result.Success = true;
+            }
+            catch (Exception ex)
+            {
+                result.Success = false;
+                result.Message = ex.Message;
+            }
+
+            return new JsonResult { Data = result };
+        }
+
+        [HttpPost]
+        public ActionResult Save(Clinic model)
+        {
+            Result result = new Result();
+
+            try
+            {
+                string strMessage = string.Empty;
+
+                switch (model.OperCode)
+                {
+                    case "add":
+                        svc.InsertClinic(model.ClinicName, model.ClinicType, model.ServiceType, model.OutPatientType, model.CoopType, model.BusinessHour, model.Phone, model.Address, model.Remark, model.DepartmentName, model.CountyId, out strMessage);
+                        
+                        break;
+
+                    case "detail":
+                        break;
+
+                    case "edit":
+                        // Edit
+                        svc.UpdateClinic(model.ClinicId, model.ClinicName, model.ClinicType, model.ServiceType, model.OutPatientType, model.CoopType, model.BusinessHour, model.Phone, model.Address, model.Remark, model.DepartmentName, model.CountyId, out strMessage);
+                        break;
+
+                    case "delete":
+                        // Delete
+                        break;
+
+                    default:
+                        break;
+                }
+
                 result.Success = true;
             }
             catch (Exception ex)

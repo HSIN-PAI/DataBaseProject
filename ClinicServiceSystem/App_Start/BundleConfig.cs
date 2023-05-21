@@ -39,6 +39,7 @@ namespace ClinicServiceSystem
                 "~/Content/datatables.css",
                 "~/Content/jquery.dataTables.css",
                 "~/Content/dataTables.bootstrap.css",
+                "~/Content/jquery-ui.css",
                 "~/Content/css/select2.css"));
         }
     }

@@ -4,7 +4,7 @@ namespace ClinicServiceSystem.Models
 {
     public class Clinic : ViewModel
     {
-        public decimal? ClinicId { get; set; }
+        public string ClinicId { get; set; }
         public string ClinicName { get; set; }
         public string ClinicType { get; set; }
         public string ServiceType { get; set; }
@@ -13,7 +13,7 @@ namespace ClinicServiceSystem.Models
         public string BusinessHour { get; set; }
         public string Phone { get; set; }
         public string Address { get; set; }
-        public string Rmark { get; set; }
+        public string Remark { get; set; }
         public string DepartmentName { get; set; }
         public int? CountyId { get; set; }
 

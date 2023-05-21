@@ -132,14 +132,14 @@
                 @Html.DropDownListFor(m => m.ServiceType, Model.ServiceTypeSelectList, new { @class = "form-control multiselect", @multiple = "multiple" })
             </div>
             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 input-group">
-                @Html.LabelFor(m => m.CoopType, new { @class = "input-group-addon" })
+                @Html.LabelFor(m => m.OutPatientType, new { @class = "input-group-addon" })
                 @Html.DropDownListFor(m => m.OutPatientType, Model.OutPatientTypeSelectList, new { @class = "form-control multiselect", @multiple = "multiple" })
             </div>
         </div>
         <div class="row">
             <div class="col-lg-3 col-md-3 col-sm-3 col-xs-3 input-group">
-                @Html.LabelFor(m => m.ClinicName, new { @class = "input-group-addon" })
-                @Html.TextBoxFor(m => m.ClinicName, new { @class = "form-control" })
+                @Html.LabelFor(m => m.BusinessHour, new { @class = "input-group-addon" })
+                @Html.DropDownListFor(m => m.BusinessHour, Model.BusinessHourSelectList, new { @class = "form-control multiselect", @multiple = "multiple" })
             </div>
         </div>
     </form>
@@ -292,7 +292,7 @@
                             autoOpen: true,
                             modal: true,
                             resizable: false,
-                            width: 600,
+                            width: 810,
                             height: 'auto',
                             close: function (event, ui) {
                                 $(this).dialog('destroy').remove();
