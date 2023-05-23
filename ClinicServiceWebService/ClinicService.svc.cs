@@ -247,7 +247,7 @@ namespace ClinicServiceWebService
 
                     string strSql = "insert into clinic " +
                                     " values (@ClinicId,@ClinicName,@ClinicType,@ServiceType,@OutPatientType,@CoopType, " +
-                                    "  @BusinessHour,@Phone,@Address,@Remark,@DepartmentName,@CountId)";
+                                    "  @BusinessHour,@Phone,@Address,@Remark,@DepartmentName,@CountyId)";
 
                     string strClinicId = DateTime.Now.ToString("yyyyMMddHHmmssffffff");
 
@@ -264,7 +264,10 @@ namespace ClinicServiceWebService
                         cmd.Parameters.Add("@Address", SqlDbType.NVarChar).Value = strAddress ?? string.Empty;
                         cmd.Parameters.Add("@Remark", SqlDbType.NVarChar).Value = strRemark ?? string.Empty;
                         cmd.Parameters.Add("@DepartmentName", SqlDbType.NVarChar).Value = strDepartmentName ?? string.Empty;
-                        cmd.Parameters.Add("@CountId", SqlDbType.Int).Value = iCountyId;
+                        if (Equals(iCountyId, null))
+                            cmd.Parameters.Add("@CountyId", SqlDbType.Int).Value = DBNull.Value;
+                        else
+                            cmd.Parameters.Add("@CountyId", SqlDbType.Int).Value = iCountyId;
 
                         cmd.ExecuteNonQuery();
 
@@ -313,6 +316,40 @@ namespace ClinicServiceWebService
                         cmd.Parameters.Add("@Remark", SqlDbType.NVarChar).Value = strRemark ?? string.Empty;
                         cmd.Parameters.Add("@DepartmentName", SqlDbType.NVarChar).Value = strDepartmentName ?? string.Empty;
                         cmd.Parameters.Add("@CountyId", SqlDbType.Int).Value = iCountyId ?? 0;
+
+                        cmd.ExecuteNonQuery();
+
+                        bResult = true;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                bResult = false;
+                strMessage = ex.Message;
+            }
+
+            return bResult;
+        }
+        public bool DeleteClinic(string strClinicId, out string strMessage)
+        {
+            bool bResult = false;
+
+            strMessage = string.Empty;
+
+            try
+            {
+                using (SqlConnection conn = new SqlConnection(_ConnStr))
+                {
+                    conn.Open();
+
+                    string strSql = "delete clinic " +
+                                    " where clinic_id=@ClinicId";
+
+
+                    using (SqlCommand cmd = new SqlCommand(strSql, conn))
+                    {
+                        cmd.Parameters.Add("@ClinicId", SqlDbType.NVarChar).Value = strClinicId;
 
                         cmd.ExecuteNonQuery();
 

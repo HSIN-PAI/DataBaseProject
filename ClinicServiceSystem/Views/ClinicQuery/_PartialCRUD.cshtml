@@ -15,12 +15,12 @@
                 @if (Model.ActionCode == Model.Create || Model.ActionCode == Model.Update)
                 {
                     @Html.LabelFor(m => m.ClinicName, new { @class = "input-group-addon" })
-                    @Html.TextBoxFor(m => m.ClinicName, new { @class = "form-control", @readonly = "false" })
+                    @Html.TextBoxFor(m => m.ClinicName, new { @class = "form-control" })
                 }
                 else
                 {
                     @Html.LabelFor(m => m.ClinicName, new { @class = "input-group-addon" })
-                    @Html.TextBoxFor(m => m.ClinicName, new { @class = "form-control" })
+                    @Html.TextBoxFor(m => m.ClinicName, new { @class = "form-control", @readonly = "false" })
                 }
             </div>
             @* ClinicType *@

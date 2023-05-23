@@ -252,7 +252,7 @@
         });
 
         // Data manipulate Action and Save
-        $('.btn.oper').on('click', function (event) {
+        $('.panel').on('click', '.btn.oper', function (event) {
             var operCode = $(this).attr('oper');
 
             var selectedRow = $(this).parents('tr');

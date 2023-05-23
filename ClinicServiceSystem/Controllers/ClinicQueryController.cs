@@ -80,6 +80,17 @@ namespace ClinicServiceSystem.Controllers
                 switch (model.OperCode)
                 {
                     case "add":
+                        model = new Clinic()
+                        {
+                            ClinicTypeSelectList = GetSelectList(svc.SelectKeyCodeClinicType(), ""),
+                            ServiceTypeSelectList = GetSelectList(svc.SelectKeyCodeServiceType(), ""),
+                            OutPatientTypeSelectList = GetSelectList(svc.SelectKeyCodeOutPatientType(), ""),
+                            CoopTypeSelectList = GetSelectList(svc.SelectKeyCodeCoopType(), ""),
+                            BusinessHourSelectList = GetSelectList(svc.SelectKeyCodeBusinessTime(), ""),
+
+                            OperCode = model.OperCode
+                        };
+
                         break;
 
                     case "detail":
@@ -141,7 +152,7 @@ namespace ClinicServiceSystem.Controllers
                 switch (model.OperCode)
                 {
                     case "add":
-                        svc.InsertClinic(model.ClinicName, model.ClinicType, model.ServiceType, model.OutPatientType, model.CoopType, model.BusinessHour, model.Phone, model.Address, model.Remark, model.DepartmentName, model.CountyId, out strMessage);
+                        result.Success = svc.InsertClinic(model.ClinicName, model.ClinicType, model.ServiceType, model.OutPatientType, model.CoopType, model.BusinessHour, model.Phone, model.Address, model.Remark, model.DepartmentName, model.CountyId, out strMessage);
                         
                         break;
 
@@ -149,19 +160,21 @@ namespace ClinicServiceSystem.Controllers
                         break;
 
                     case "edit":
-                        // Edit
-                        svc.UpdateClinic(model.ClinicId, model.ClinicName, model.ClinicType, model.ServiceType, model.OutPatientType, model.CoopType, model.BusinessHour, model.Phone, model.Address, model.Remark, model.DepartmentName, model.CountyId, out strMessage);
+                        result.Success = svc.UpdateClinic(model.ClinicId, model.ClinicName, model.ClinicType, model.ServiceType, model.OutPatientType, model.CoopType, model.BusinessHour, model.Phone, model.Address, model.Remark, model.DepartmentName, model.CountyId, out strMessage);
+                        
                         break;
 
                     case "delete":
-                        // Delete
+                        result.Success = svc.DeleteClinic(model.ClinicId, out strMessage);
+
                         break;
 
                     default:
                         break;
                 }
 
-                result.Success = true;
+                if (!result.Success)
+                    throw new Exception(strMessage);
             }
             catch (Exception ex)
             {

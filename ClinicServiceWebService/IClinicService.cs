@@ -23,5 +23,8 @@ namespace ClinicServiceWebService
 
         [OperationContract]
         bool UpdateClinic(string strClinicId, string strClinicName, string strClinicType, string strServiceType, string strOutPatientType, string strCoopType, string strBusinessHour, string strPhone, string strAddress, string strRemark, string strDepartmentName, int? iCountyId, out string strMessage);
+
+        [OperationContract]
+        bool DeleteClinic(string strClinicId, out string strMessage);
     }
 }
